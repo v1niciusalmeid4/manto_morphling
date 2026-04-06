@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:morphling/morphling.dart';
 import 'package:morphling/src/components/layout/design_tokens.dart';
 import 'package:morphling/src/modules/auth/presentation/bloc/login_bloc.dart';
 import 'package:morphling/src/modules/auth/presentation/bloc/login_event.dart';
@@ -112,6 +113,7 @@ class _MorphLoginPageState<
 
     widget.bloc.onInit();
     _subscription = widget.bloc.state.listen(_onStateChanged);
+
     widget.bloc.dispatchEvent(InitRequested<TToken, TCompany>());
     if (widget.requestBiometricOnInit) {
       widget.bloc.dispatchEvent(BiometricRequested<TToken, TCompany>());
@@ -291,10 +293,7 @@ class _MorphLoginPageState<
                 labelText: widget.labels.registrationNumber,
                 controller: registrationController,
                 validator: _validateCnpj,
-                inputFormatters: [
-                  FilteringTextInputFormatter.digitsOnly,
-                  _CnpjInputFormatter(),
-                ],
+                inputFormatters: [CnpjInputFormatter()],
                 keyboardType: TextInputType.number,
                 suffixIcon: _registrationNumberFeedBack(state.status, theme),
                 onChanged: (value) {
@@ -944,31 +943,6 @@ class _LoginBackground extends StatelessWidget {
           ],
         ),
       ),
-    );
-  }
-}
-
-class _CnpjInputFormatter extends TextInputFormatter {
-  @override
-  TextEditingValue formatEditUpdate(
-    TextEditingValue oldValue,
-    TextEditingValue newValue,
-  ) {
-    final digits = newValue.text.replaceAll(RegExp(r'\D'), '');
-    final truncated = digits.length > 14 ? digits.substring(0, 14) : digits;
-
-    final buffer = StringBuffer();
-    for (var i = 0; i < truncated.length; i++) {
-      buffer.write(truncated[i]);
-      if (i == 1 || i == 4) buffer.write('.');
-      if (i == 7) buffer.write('/');
-      if (i == 11) buffer.write('-');
-    }
-
-    final formatted = buffer.toString();
-    return TextEditingValue(
-      text: formatted,
-      selection: TextSelection.collapsed(offset: formatted.length),
     );
   }
 }
