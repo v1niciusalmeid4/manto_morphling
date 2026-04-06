@@ -1,6 +1,6 @@
 name: morphling
 description: "A new Flutter package project."
-version: 0.0.1
+version: 1.0.0
 homepage:
 
 environment:
@@ -11,16 +11,20 @@ dependencies:
   flutter:
     sdk: flutter
   
-  #Dependency Injection
+  # Dependency Injection
   get_it: ^7.2.0
   
-  #Lint
+  # Lint
   intl: ^0.19.0
 
-  #Shimmer
+  # Shimmer
   shimmer: ^3.0.0
 
+  # Html to PDF
+  html_to_pdf: ^0.8.1
 
+  # Path Provider
+  path_provider: ^2.0.11
 
 
 dev_dependencies:
