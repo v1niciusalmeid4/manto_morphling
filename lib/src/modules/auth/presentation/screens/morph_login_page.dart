@@ -4,27 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:morphling/morphling.dart';
-import 'package:morphling/src/components/layout/design_tokens.dart';
-import 'package:morphling/src/modules/auth/presentation/bloc/login_bloc.dart';
-import 'package:morphling/src/modules/auth/presentation/bloc/login_event.dart';
-import 'package:morphling/src/modules/auth/presentation/bloc/login_state.dart';
-import 'package:morphling/src/modules/auth/presentation/bloc/login_status.dart';
-import 'package:morphling/src/modules/auth/domain/models/login_result.dart';
-import 'package:morphling/src/modules/auth/presentation/ports/auth_ui_mapper.dart';
 import 'package:morphling/src/modules/auth/presentation/screens/app_logo.dart';
-import 'package:morphling/src/modules/auth/presentation/screens/login_field_labels.dart';
-
-class AppSettings {
-  final String appName;
-  final String subName;
-  final String label;
-
-  const AppSettings({
-    this.appName = 'Manto Sistemas',
-    this.subName = '',
-    this.label = 'Acesse sua conta!',
-  });
-}
 
 class MorphLoginPage<
   TUser extends Object,
