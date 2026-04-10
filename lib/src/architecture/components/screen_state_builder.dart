@@ -20,7 +20,7 @@ class ScreenStateBuilder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<ScreenState>(
-      stream: bloc.streamOf(key: bloc),
+      stream: bloc.state as Stream<ScreenState>,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           final state = snapshot.data;

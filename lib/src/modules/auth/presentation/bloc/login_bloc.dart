@@ -50,16 +50,16 @@ class MorphLoginBloc<
   final bool Function(TCompany left, TCompany right)? _companyMatcher;
 
   bool _isBiometryInProgress = false;
+  bool _isInitialized = false;
 
   LoginState<TUser, TToken, TCompany> _currentState;
 
   LoginState<TUser, TToken, TCompany> get currentState => _currentState;
 
   @override
-  Stream<LoginState<TUser, TToken, TCompany>> get state => streamOf(key: this);
-
-  @override
   void onInit() {
+    if (_isInitialized) return;
+    _isInitialized = true;
     super.onInit();
     dispatchState(_currentState);
   }

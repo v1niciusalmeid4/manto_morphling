@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:morphling/morphling.dart';
 
@@ -6,82 +8,60 @@ import 'package:morphling/morphling.dart';
 /// Utilizar a função [@onReady] para fazer requisições iniciais e inicializar
 /// campos e dados.
 
-abstract class IBloC<Event, State> with FancyMixin, HudMixin {
-  IBloC({State? initialState}) {
+// ignore: avoid_types_as_parameter_names
+abstract class IBloC<Event, ScreenState> with HudMixin {
+  late NavigatorService _navigatorService;
+
+  IBloC({ScreenState? initialState}) {
+    _event = StreamController<Event>.broadcast();
+    _state = StreamController<ScreenState>.broadcast();
+
+    _navigatorService = ContainerInjector().find();
+
     if (initialState != null) {
       dispatchState(initialState);
     }
   }
 
-  @visibleForTesting
-  Stream<State>? get state => streamOf(key: this);
+  late StreamController<ScreenState> _state;
+  Stream<ScreenState> get state => _state.stream;
 
-  @visibleForTesting
-  Stream<Event>? get event => streamOf();
+  late StreamController<Event> _event;
+  Stream<Event> get event => _event.stream;
 
-  dynamic getArguments() {}
+  dynamic getArguments() {
+    return _navigatorService.getArguments();
+  }
 
-  void pop<T>({T? result}) {}
+  void pop<T>({T? result}) {
+    return _navigatorService.pop<T>(result: result);
+  }
 
   void onReady() {}
 
-  /// Start listening to Event and callback on [@handleEvent] function
-  /// Dispatch the first state [@Empty]
+  /// cria os [StreamController]s e
+  /// inicializa o listener escutando os eventos [@handleEvent]
   void onInit() {
-    listen<Event>(handleEvent);
+    event.listen(handleEvent);
   }
 
-  /// Closes the fancy stream lacks.
   void onClose() {
-    fancyDispose();
-  }
-
-  Future<void> doPersist({
-    required Function action,
-    Function(Exception)? onError,
-    Function? onFinish,
-  }) async {
-    try {
-      dispatch<PersistingState>(PersistingState.loading);
-      await action();
-    } on Exception catch (ex) {
-      dispatch<PersistingState>(PersistingState.error);
-      onError?.call(ex);
-    } finally {
-      dispatch<PersistingState>(PersistingState.idle);
-      onFinish?.call();
-    }
-  }
-
-  Future<void> doFetch({
-    required Function action,
-    Function? onError,
-    Function? onFinish,
-  }) async {
-    try {
-      dispatch<FetchingState>(FetchingState.loading);
-      await action();
-    } on Exception catch (_) {
-      dispatch<FetchingState>(FetchingState.error);
-      onError?.call();
-    } finally {
-      dispatch<FetchingState>(FetchingState.idle);
-      onFinish?.call();
-    }
+    _state.close();
+    _event.close();
   }
 
   @protected
   void handleEvent(Event event);
 
-  /// Normaly used for handle failures coming
-  /// from usecases
+  /// Normalmente usado para tratar erros que venham
+  /// dos casos de uso
   @protected
   void handleFailure(Failure failure) {
     showFailure(failure.message);
   }
 
-  void dispatchEvent(Event event) => dispatch<Event>(event);
+  void dispatchEvent(Event event) => _event.add(event);
 
   @protected
-  void dispatchState(State state) => dispatch<State>(state, key: this);
+  void dispatchState(ScreenState state) => _state.add(state);
 }

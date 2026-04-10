@@ -1,7 +1,5 @@
 export 'bloc/bloc.dart';
 export 'bloc/bloc_state.dart';
-export 'bloc/persisting_state.dart';
-export 'bloc/fetching_state.dart';
 export 'bloc/navigator.dart';
 export 'bloc/screen.dart';
 export 'exceptions/exceptions.dart';

@@ -1,9 +1,7 @@
 abstract class ScreenState<T> {
   final T? data;
 
-  ScreenState({
-    this.data,
-  });
+  ScreenState({this.data});
 }
 
 class Empty<T> extends ScreenState {
