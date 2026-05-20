@@ -118,7 +118,6 @@ class _MorphLoginPageState<
     return Scaffold(
       body: Stack(
         children: [
-          const _LoginBackground(),
           SafeArea(
             child: Center(
               child: ConstrainedBox(
@@ -170,7 +169,7 @@ class _MorphLoginPageState<
           gradient: const LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: [Color(0xFF0F62D8), Color(0xFF1495FF)],
+            colors: [Color(0xFF233365), Color(0xFF1c2954)],
           ),
           boxShadow: const [
             BoxShadow(
@@ -502,7 +501,7 @@ class _MorphLoginPageState<
         gradient: const LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [Color(0xFF0F62D8), Color(0xFF1495FF)],
+          colors: [Color(0xFF233365), Color(0xFF1c2954)],
         ),
       ),
       child: FilledButton(

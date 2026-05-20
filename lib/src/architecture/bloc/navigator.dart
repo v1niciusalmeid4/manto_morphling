@@ -3,15 +3,11 @@ import 'package:flutter/material.dart';
 abstract class NavigatorService {
   static final GlobalKey<NavigatorState> key = GlobalKey();
 
-  Future<T?>? toNamed<T>(
-    String route, {
-    dynamic arguments,
-  });
+  final BuildContext? context = key.currentContext;
 
-  Future<T?>? offAllNamed<T>(
-    String route, {
-    dynamic arguments,
-  });
+  Future<T?>? toNamed<T>(String route, {dynamic arguments});
+
+  Future<T?>? offAllNamed<T>(String route, {dynamic arguments});
 
   Future<T?>? popAndToNamed<T>(
     String route, {
@@ -19,9 +15,7 @@ abstract class NavigatorService {
     dynamic result,
   });
 
-  void pop<T>({
-    T? result,
-  });
+  void pop<T>({T? result});
 
   void setArguments(Object? args);
   Object? getArguments();
@@ -39,10 +33,7 @@ class NavigatorServiceImpl implements NavigatorService {
   BuildContext? get context => NavigatorService.key.currentContext;
 
   @override
-  Future<T?>? toNamed<T>(
-    String route, {
-    dynamic arguments,
-  }) {
+  Future<T?>? toNamed<T>(String route, {dynamic arguments}) {
     this.arguments = arguments;
     lastRoute = currentRoute;
     currentRoute = route;
@@ -54,10 +45,7 @@ class NavigatorServiceImpl implements NavigatorService {
   }
 
   @override
-  Future<T?>? offAllNamed<T>(
-    String route, {
-    dynamic arguments,
-  }) {
+  Future<T?>? offAllNamed<T>(String route, {dynamic arguments}) {
     this.arguments = arguments;
     lastRoute = currentRoute;
     currentRoute = route;
@@ -87,9 +75,7 @@ class NavigatorServiceImpl implements NavigatorService {
   }
 
   @override
-  void pop<T>({
-    T? result,
-  }) {
+  void pop<T>({T? result}) {
     arguments = null;
     final currentState = NavigatorService.key.currentState;
     if (currentState != null && currentState.canPop()) {

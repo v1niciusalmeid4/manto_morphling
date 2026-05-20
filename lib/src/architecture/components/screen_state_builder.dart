@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import '../architecture.dart';
 
-class ScreenStateBuilder extends StatelessWidget {
-  final IBloC bloc;
-  final Widget Function(BuildContext context, Empty state) onEmpty;
-  final Widget Function(BuildContext context, Loading state) onLoading;
-  final Widget Function(BuildContext context, Stable state) onStable;
-  final Widget Function(BuildContext context, Error state) onError;
+class ScreenStateBuilder<T> extends StatelessWidget {
+  final IBloC<dynamic, ScreenState<T>> bloc;
+  final Widget Function(BuildContext context, Empty<T> state) onEmpty;
+  final Widget Function(BuildContext context, Loading<T> state) onLoading;
+  final Widget Function(BuildContext context, Stable<T> state) onStable;
+  final Widget Function(BuildContext context, Error<T> state) onError;
 
   const ScreenStateBuilder({
     required this.bloc,
@@ -19,21 +19,18 @@ class ScreenStateBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<ScreenState>(
-      stream: bloc.state as Stream<ScreenState>,
+    return StreamBuilder<ScreenState<T>>(
+      stream: bloc.state,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           final state = snapshot.data;
-          if (state is Loading) {
+          if (state is Loading<T>) {
             return onLoading(context, state);
-          }
-          if (state is Stable) {
+          } else if (state is Stable<T>) {
             return onStable(context, state);
-          }
-          if (state is Empty) {
+          } else if (state is Empty<T>) {
             return onEmpty(context, state);
-          }
-          if (state is Error) {
+          } else if (state is Error<T>) {
             return onError(context, state);
           }
         }

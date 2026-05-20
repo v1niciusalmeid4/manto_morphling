@@ -11,6 +11,7 @@ import 'package:morphling/morphling.dart';
 // ignore: avoid_types_as_parameter_names
 abstract class IBloC<Event, ScreenState> with HudMixin {
   late NavigatorService _navigatorService;
+  bool _isInitialized = false;
 
   IBloC({ScreenState? initialState}) {
     _event = StreamController<Event>.broadcast();
@@ -42,13 +43,12 @@ abstract class IBloC<Event, ScreenState> with HudMixin {
   /// cria os [StreamController]s e
   /// inicializa o listener escutando os eventos [@handleEvent]
   void onInit() {
+    if (_isInitialized) return;
+    _isInitialized = true;
     event.listen(handleEvent);
   }
 
-  void onClose() {
-    _state.close();
-    _event.close();
-  }
+  void onClose() {}
 
   @protected
   void handleEvent(Event event);

@@ -1,22 +1,22 @@
 abstract class ScreenState<T> {
   final T? data;
 
-  ScreenState({this.data});
+  const ScreenState({this.data});
 }
 
-class Empty<T> extends ScreenState {
-  Empty({super.data});
+class Empty<T> extends ScreenState<T> {
+  const Empty({super.data});
 }
 
-class Loading<T> extends ScreenState {
-  Loading({super.data});
+class Loading<T> extends ScreenState<T> {
+  const Loading({super.data});
 }
 
-class Stable<T> extends ScreenState {
-  Stable({super.data});
+class Stable<T> extends ScreenState<T> {
+  const Stable({super.data});
 }
 
-class Error<T> extends ScreenState {
+class Error<T> extends ScreenState<T> {
   final String message;
-  Error({required this.message, super.data});
+  const Error({required this.message, super.data});
 }

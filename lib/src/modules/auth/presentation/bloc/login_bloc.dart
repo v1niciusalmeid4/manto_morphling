@@ -41,11 +41,13 @@ class MorphLoginBloc<
   final AuthCatalogGateway<TToken, TCompany> _catalogGateway;
   final AuthSessionGateway<TUser, TCompany> _sessionGateway;
   final CredentialVault<TToken, TCompany> _credentialVault;
-  final NotificationTokenProvider _notificationTokenProvider;
-  final PasswordCipher _passwordCipher;
-  final BiometricGateway _biometricGateway;
   final AuthPolicy<TUser, TToken, TCompany> _policy;
   final AuthPostLoginHook<TUser, TToken, TCompany> _postLoginHook;
+
+  final NotificationTokenProvider _notificationTokenProvider;
+  final BiometricGateway _biometricGateway;
+  final PasswordCipher _passwordCipher;
+
   final bool Function(TToken left, TToken right)? _tokenMatcher;
   final bool Function(TCompany left, TCompany right)? _companyMatcher;
 
@@ -59,8 +61,11 @@ class MorphLoginBloc<
   @override
   void onInit() {
     if (_isInitialized) return;
+
     _isInitialized = true;
+
     super.onInit();
+
     dispatchState(_currentState);
   }
 
